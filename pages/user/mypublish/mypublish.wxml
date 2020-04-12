@@ -1,0 +1,20 @@
+
+
+<view wx:if="{{loaded}}" class="body">
+     <view class="item itemjd" data-_id="{{p._id}}" data-BarCode="{{p.BarCode}}"bind:longpress="deletegoods" wx:for="{{mypublishlist}}" wx:key="BarCode" wx:for-item="p">
+      <view class="img">
+        <image src="{{p.imgUrl[0]}} " mode="aspectFit " />
+      </view>
+      <view class="con">
+        <view class="nm">{{p.ProductName}}</view>
+        <view class="sub">简介
+          <text>{{p.DescribeA}}</text>
+        </view>
+        <view class="des">共{{p.ProductPrice}}每件商品</view>
+      </view>
+      <view class="iconpadding">
+        >>
+        <!--<image src="{{p.imgUrl}} " mode="aspectFit " />-->
+      </view>
+    </view>
+</view>

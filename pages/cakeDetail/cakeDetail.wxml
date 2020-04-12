@@ -1,0 +1,28 @@
+<view  class="c">
+  <view class="m">
+    <swiper indicator-dots="true" autoplay="false" current="0" circular="false" duration="400" class="hd">
+      <block wx:for="{{list.imgUrl}}" wx:for-item="url" wx:key="*this">
+        <swiper-item data-index="{{index}}" catchtap="previewImg">
+          <image src="{{url}}" class="slide-image" />
+        </swiper-item>
+      </block>
+    </swiper>
+    <view class="tit">{{list.ProductName}}</view>
+    <view class="des">{{list.DescribeA}}</view>
+    <view class="pp">
+      <view class="price">￥
+        <text>{{(list.ProductPrice)+".00"}}</text>
+      </view>
+    </view>
+    <view class="size">
+      <view class="sitem {{current.size==s.Size?'sitem-on':'sitem-out'}}" data-supplyno="{{s.SupplyNo}}" data-size="{{s.Size}}" data-price="{{s.CurrentPrice}}" catchtap="changeCurrent" wx:for="{{CakeType}}" wx:for-item="s" wx:key="Id">
+      </view>
+    </view>
+    <view class="sm">说明：
+      <text>{{list.DescribeB}}</text>
+    </view>
+  </view>
+  <view class="tool">
+    <view class="tbtn buy" catchtap="addCart">加入购物车(<text class="cart-num">{{cartNum}}</text>)</view>
+  </view>
+</view>

@@ -1,0 +1,14 @@
+<view >
+  <view class="item itemjd" data-pname="{{idx}}" bindtap="goDetail" wx:for="{{list}}" wx:for-index="idx"wx:key="name" wx:for-item="p">
+    <view class="img">
+      <image src="{{p.imgUrl[0]}} " mode="aspectFit" />
+    </view>
+    <view class="con">
+      <view class="nm">{{p.ProductName}}</view>
+      <view class="des">{{p.DescribeA}}</view>
+      <view class="sub">￥
+        <text>{{p.ProductPrice}}</text>
+      </view>
+    </view>
+  </view>
+</view>
