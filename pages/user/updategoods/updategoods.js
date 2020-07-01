@@ -175,6 +175,9 @@ Page({
 
     },
     onShow: function (e) {
+      wx.setNavigationBarTitle({
+        title: '更新信息'
+      })
 
     },
 
@@ -217,7 +220,7 @@ Page({
       console.log(e)
       // book.userId = wx.getStorageSync('userId')
       if (goods.BarCode == '' || goods.ProductName == '' || goods.ProductPrice == '' || goods.DescribeA == '' ||
-        goods.DescribeB == '' ) {
+        goods.DescribeB == '' || goods.imgUrl == '' ) {
         wx.showModal({
           title: '提示',
           content: '你输入的商品信息不完善!',

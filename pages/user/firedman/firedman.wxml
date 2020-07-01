@@ -1,0 +1,43 @@
+<view class="addr_box">
+  <view class="addr_head">
+
+
+    <view class="weui-search-bar">
+      <view class="weui-search-bar__form">
+        <view class="weui-search-bar__box">
+          <icon class="weui-icon-search_in-box" type="search" bindtap="screenInput"size="14"></icon>
+          <input type="text" class="weui-search-bar__input" placeholder="扫描或输入身份证号搜索" value="{{idnumber}}"  bindinput="inputTyping" />
+          <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+            <icon type="clear" size="14"></icon>
+          </view>
+        </view>
+      </view>
+      <view class="weui-search-bar__cancel-btn" bindtap="searchtfiredmanList">搜索</view>
+    </view>
+
+
+  </view>
+  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: 85vh" bindscrolltolower="onReachBottom">
+    <view class="addr_body" data-_id="{{a._id}}" wx:for="{{mylist}}" bind:longpress="deletinventory" wx:key="id" wx:for-index="i" wx:for-item="a">
+      <view class="addr_body_edit">
+        <navigator url="{{'../../user/editfiredman/editfiredman?mod=edit&_id='+a._id+'&name='+a.name+'&idnumber='+a.idnumber+'&reason='+a.reason}}" open-type="navigate" hover-class="navigator-hover">修改
+        </navigator>
+      </view>
+      <view class="addr_body_my_det">
+        <view>姓名：{{a.name}}</view>
+        <view>身份证号:{{a.idnumber}}</view>
+        <view class="addr_body_my_det">开除原因:{{a.reason}}</view>
+      </view>
+      <view class="addr_body_sel" data-aid="{{a.id}}" bindtap="toSelect">
+        <!-- <icon type="success" size="25" data-aid="{{a.id}}" color="{{a.id==selectedID?'green':'#EEE'}}" /> -->
+      </view>
+    </view>
+  </scroll-view>
+  <view class="addr_box_add">
+    <navigator url="../../user/editfiredman/editfiredman?mod=add" open-type="navigate" hover-class="navigator-hover">
+      <label class="addr_lbl_add">+</label>新增辞退孟工
+    </navigator>
+  </view>
+</view>
+<!--遮罩层-->
+<view class="hiddenbox" wx:if="{{addrShow}}" bindtap="closeaddr"></view>

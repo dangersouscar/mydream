@@ -1,1 +1,5 @@
-{}
+{
+  "navigationBarTitleText": "物资详情",
+  "backgroundColor": "#f3f3f3",
+  "enablePullDownRefresh": false
+}

@@ -1,1 +1,5 @@
-{}
+{
+  "navigationBarTitleText": "五公司物资部",
+  "backgroundColor": "#f3f3f3",
+  "enablePullDownRefresh": false
+}

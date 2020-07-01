@@ -1,64 +1,101 @@
 <view class="u" wx:if="{{loaded}}">
-    <view class="logo" bindtap="changeimg">
-        <image src="{{userInfo.avatarUrl}}"></image>
+  <view class="logo" bindtap="changeimg">
+    <image src="{{userInfo.avatarUrl}}"></image>
+  </view>
+  <view class="des">
+    <!--<view class="uname">{{userInfo.nickName}}</view>-->
+    <!--<view class="phone">{{phone}}</view>-->
+    <!--<open-data type="userAvatarUrl"></open-data>-->
+    <button type="primary" wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">授权登录</button>
+    <view wx:else="">
+      <view class="uname">{{userInfo.nickName}}</view>
     </view>
-    <view class="des">
-        <!--<view class="uname">{{userInfo.nickName}}</view>-->
-        <!--<view class="phone">{{phone}}</view>-->
-        <!--<open-data type="userAvatarUrl"></open-data>-->
-        <button type="primary" wx:if="{{!userInfo}}" open-type="getUserInfo" bindgetuserinfo="onGotUserInfo">授权登录</button>
-        <view wx:else="">
-            <view class="uname">{{userInfo.nickName}}</view>
-            <view class="phone">1362383****</view>
-        </view>
-    </view>
+  </view>
 </view>
 <view class="ua">
 </view>
 <view class="weui-cellsme">
-<navigator class="weui-cell" url="../user/myorder/myorder">
+  <navigator class="weui-cell" url="../user/myorder/myorder">
     <view class="weui-cell__hd">
-        <image src="https://m.bestcake.com/images/icon_user.jpg"></image>
+      <image src="https://m.bestcake.com/images/icon_user.jpg"></image>
     </view>
     <view class="weui-cell__bd">
-        <p>我的订单</p>
+      <p>倒运记录</p>
     </view>
     <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-</navigator>
-<navigator class="weui-cell" url="../user/myaddress/myaddress">
+  </navigator>
+  <navigator class="weui-cell" url="../user/inventory/inventory">
     <view class="weui-cell__hd">
-        <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+      <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
     </view>
     <view class="weui-cell__bd">
-        <p>我的地址</p>
+      <p>物资库存</p>
     </view>
     <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-</navigator>
-<navigator class="weui-cell" url="../user/publish/publish">
+  </navigator>
+  <view class="weui-cell" bindtap="tomyfiredman">
     <view class="weui-cell__hd">
-        <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+      <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
     </view>
     <view class="weui-cell__bd">
-        <p>发布商品</p>
+      <p>孟黑名单</p>
     </view>
     <view class="weui-cell__ft weui-cell__ft_in-access"></view>
-</navigator>
-<view class="weui-cell" bindtap="exist">
+  </view>
+  <!-- <navigator wx:if="{{manager}}" class="weui-cell" url="../user/publish/publish">
     <view class="weui-cell__hd">
-        <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+      <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
     </view>
     <view class="weui-cell__bd">
-        <p>客户订单</p>
+      <p>发布商品</p>
     </view>
     <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  </navigator> -->
+  <!-- <view class="weui-cell" wx:if="{{manager}}" bindtap="gotomypublish">
+    <view class="weui-cell__hd">
+      <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+    </view>
+    <view class="weui-cell__bd">
+      <p>我的发布</p>
+    </view>
+    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  </view> -->
+  <view class="weui-cell" bindtap="myaddrChange" wx:if="{{manager}}">
+    <view class="weui-cell__hd">
+      <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+    </view>
+    <view class="weui-cell__bd">
+      <p>系统设置</p>
+    </view>
+    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  </view>
 </view>
-<view class="weui-cell" bindtap="gotomypublish">
-    <view class="weui-cell__hd">
-        <image src="https://m.bestcake.com/images/icon_user.jpg" style="width:40rpx;height:40rpx;"></image>
+<view class="addr_box" wx:if="{{addrShow}}">
+  <view class="addr_head">
+    <view class="addr_head_cancel" bindtap="myaddrCancel">返回</view>
+    <view class="addr_head_title">工点人数</view>
+  </view>
+  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: 85vh">
+    <view class="addr_body" data-_id="{{a._id}}" wx:for="{{addresslist}}" bind:longpress="deletplacename" wx:key="id" wx:for-index="i" wx:for-item="a">
+      <view class="addr_body_edit">
+        <navigator url="{{'../user/editaddress/editaddress?mod=edit&_id='+a._id+'&placename='+a.placename+'&peoplenumber='+a.peoplenumber}}" open-type="navigate" hover-class="navigator-hover">修改
+        </navigator>
+      </view>
+      <view class="addr_body_my_det">
+        <view>工点名称：{{a.placename}} {{a.phone}}</view>
+        <view class="addr_body_my_det">人数：{{a.peoplenumber}}</view>
+        <view class="addr_body_my_det">更新时间：{{a.time}}</view>
+      </view>
+      <view class="addr_body_sel" data-aid="{{a.id}}" bindtap="toSelect">
+        <!-- <icon type="success" size="25" data-aid="{{a.id}}" color="{{a.id==selectedID?'green':'#EEE'}}" /> -->
+      </view>
     </view>
-    <view class="weui-cell__bd">
-        <p>我的发布</p>
-    </view>
-    <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+  </scroll-view>
+  <view class="addr_box_add">
+    <navigator url="../user/editaddress/editaddress?mod=add" open-type="navigate" hover-class="navigator-hover">
+      <label class="addr_lbl_add">+</label>新增收货地址
+    </navigator>
+  </view>
 </view>
-</view>
+<!--遮罩层-->
+<view class="hiddenbox" wx:if="{{addrShow}}" bindtap="closeaddr"></view>

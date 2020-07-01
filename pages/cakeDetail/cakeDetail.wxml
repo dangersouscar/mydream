@@ -10,7 +10,7 @@
     <view class="tit">{{list.ProductName}}</view>
     <view class="des">{{list.DescribeA}}</view>
     <view class="pp">
-      <view class="price">￥
+      <view class="price">TK
         <text>{{(list.ProductPrice)+".00"}}</text>
       </view>
     </view>
@@ -18,11 +18,11 @@
       <view class="sitem {{current.size==s.Size?'sitem-on':'sitem-out'}}" data-supplyno="{{s.SupplyNo}}" data-size="{{s.Size}}" data-price="{{s.CurrentPrice}}" catchtap="changeCurrent" wx:for="{{CakeType}}" wx:for-item="s" wx:key="Id">
       </view>
     </view>
-    <view class="sm">说明：
+    <!-- <view class="sm">说明：
       <text>{{list.DescribeB}}</text>
-    </view>
+    </view> -->
   </view>
   <view class="tool">
-    <view class="tbtn buy" catchtap="addCart">加入购物车(<text class="cart-num">{{cartNum}}</text>)</view>
+    <view class="tbtn buy" catchtap="addCart">加入清单(<text class="cart-num">{{cartNum}}</text>)</view>
   </view>
 </view>

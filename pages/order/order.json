@@ -1,1 +1,5 @@
-{}
+{
+  "navigationBarTitleText": "填写相关信息",
+  "backgroundColor": "#f3f3f3",
+  "enablePullDownRefresh": false
+}

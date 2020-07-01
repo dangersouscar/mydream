@@ -1,7 +1,7 @@
-
+ <view class="nm">物资信息登记系统</view>
 
 <view class="ipt">
-  <input bindinput="changephone" placeholder="手机号" value="{{phone}}" />
+  <input bindinput="changephone" placeholder="公司名称" value="{{phone}}" />
 </view>
 <view class="ipt">
   <input bindinput="changepwd" placeholder="密码" value="{{pwd}}" />

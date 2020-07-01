@@ -1,0 +1,25 @@
+<view class="addr_box" >
+  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" style="height: 85vh" bindscrolltolower="onReachBottom" >
+    <view class="addr_body" data-_id="{{a._id}}" wx:for="{{mylist}}" bind:longpress="deletinventory"wx:key="id" wx:for-index="i" wx:for-item="a">
+      <view class="addr_body_edit">
+        <navigator url="{{'../../user/editinventory/editinventory?mod=edit&_id='+a._id+'&goodsname='+a.goodsname+'&goodsnumber='+a.goodsnumber+'&goodsspecifation='+a.goodsspecifation}}" open-type="navigate" hover-class="navigator-hover">修改
+        </navigator>
+      </view>
+      <view class="addr_body_my_det">
+        <view>材料名称：{{a.goodsname}}</view>
+        <view>规格型号:{{a.goodsspecifation}}数量：{{a.goodsnumber}}</view>
+        <view class="addr_body_my_det">更新时间：{{a.time}}</view>
+      </view>
+      <view class="addr_body_sel" data-aid="{{a.id}}" bindtap="toSelect">
+        <!-- <icon type="success" size="25" data-aid="{{a.id}}" color="{{a.id==selectedID?'green':'#EEE'}}" /> -->
+      </view>
+    </view>
+  </scroll-view>
+  <view class="addr_box_add">
+    <navigator url="../../user/editinventory/editinventory?mod=add" open-type="navigate" hover-class="navigator-hover">
+      <label class="addr_lbl_add">+</label>新增物资库存
+    </navigator>
+  </view>
+</view>
+<!--遮罩层-->
+<view class="hiddenbox" wx:if="{{addrShow}}" bindtap="closeaddr"></view>

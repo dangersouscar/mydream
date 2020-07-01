@@ -1,29 +1,24 @@
 {
   "pages": [
     "pages/cake/cake",
-    "pages/success/success",
-    "pages/payment/payment",
     "pages/order/order",
     "pages/cakeDetail/cakeDetail",
-    "pages/buy/buy",
-    "pages/phone/phone",
     "pages/cart/cart",
     "pages/user/user",
     "pages/login/login",
-    "pages/logs/logs",
     "pages/user/myorder/myorder",
-    "pages/user/mypublish/mypublish",
-    "pages/user/myjzb/myjzb",
-    "pages/user/myorderdetals/myorderdetals",
-    "pages/user/myaddress/myaddress",
-    "pages/user/mycoupons/mycoupons",
+    "pages/user/inventory/inventory",
+    "pages/user/firedman/firedman",
     "pages/user/editaddress/editaddress",
-    "pages/user/publish/publish"
+    "pages/user/editfiredman/editfiredman",
+    "pages/user/editinventory/editinventory",
+    "pages/user/updategoods/updategoods"
+
   ],
   "window": {
     "backgroundTextStyle": "dark",
     "navigationBarBackgroundColor": "#576b95",
-    "navigationBarTitleText": "优淘二书",
+    "navigationBarTitleText": "五公司物资部",
     "navigationBarTextStyle": "white"
   },
   "tabBar": {
@@ -36,7 +31,7 @@
       },
       {
         "pagePath": "pages/cart/cart",
-        "text": "购物车",
+        "text": "清单",
         "iconPath": "icon/cart-1.png",
         "selectedIconPath": "icon/cart-2.png"
       },

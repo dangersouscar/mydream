@@ -1,0 +1,39 @@
+<view class="body" wx:if="{{loaded}}">
+    <view class="ipt">
+        <input bindinput="changeName" placeholder="材料名称" value="{{goodsname}}"/>
+    </view>
+
+    <view class="ipt">
+        <input bindinput="changegoodsspecifation" placeholder="规格型号" value="{{goodsspecifation}}"/>
+    </view>
+     <view class="ipt">
+        <input bindinput="changegoodsnumber" placeholder="数量" value="{{goodsnumber}}"/>
+    </view>
+    
+
+    <!-- <view class="section">
+        <picker bindchange="bindPickerChangeCity" value="{{indexCity}}" range="{{arrayCity}}">
+            <view class="picker" style="padding-left:10px;color:#666;">
+                城市选择：{{arrayCity[indexCity]}}
+            </view>
+        </picker>
+    </view>
+
+    <view class="section">
+        <picker bindchange="bindPickerChangeDistrict" value="{{indexDistrict}}" range="{{arrayDistrict}}">
+            <view class="picker" style="padding-left:10px;color:#666;">
+                区域选择：{{arrayDistrict[indexDistrict]}}
+            </view>
+        </picker>
+    </view>
+
+    <view class="ipt">
+        <input bindinput="changeAddress" placeholder="详细收货地址" value="{{address}}"/>
+    </view> -->
+
+    <view class="btn" bindtap="submit">
+        确认提交
+    </view>
+</view>
+
+ 

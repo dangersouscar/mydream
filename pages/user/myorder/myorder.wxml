@@ -1,20 +1,50 @@
+<view class="section"> 
+        <picker bindchange="bindPickerChangefrom" value="{{indexfrom}}" range="{{addresslist}}"> 
+            <view class="picker" style="padding-left:10px;color:#666;"> 
+                发货地选择：{{addresslist[indexfrom]}} 
+            </view> 
+        </picker> 
+ </view>
+ <view class="section"> 
+        <picker bindchange="bindPickerChangeto" value="{{indexto}}" range="{{addresslist}}"> 
+            <view class="picker" style="padding-left:10px;color:#666;"> 
+                收货地选择：{{addresslist[indexto]}} 
+            </view> 
+        </picker> 
+ </view>
+ <view class="section"> 
+        <picker bindchange="bindPickerChangegoods" value="{{indexgoods}}" range="{{goodslist}}"> 
+            <view class="picker" style="padding-left:10px;color:#666;"> 
+                货物选择：{{goodslist[indexgoods]}} 
+            </view> 
+        </picker> 
+ </view>
+  <view class="btn" bindtap="myaddrChange" > 
+        查询 
+  </view>  
 
 
-<view wx:if="{{loaded}}" class="body">
-     <view class="item itemjd" data-poid="{{p.oid}}" bindtap="toDetail" wx:for="{{mylist}}" wx:key="oid" wx:for-item="p">
-      <view class="img">
-        <image src="{{p.imgUrl}} " mode="aspectFit " />
+
+
+
+  <view class="addr_box" wx:if="{{addrShow}}">
+  <view class="addr_head">
+    <view class="addr_head_cancel" bindtap="myaddrCancel">返回</view>
+    <view class="addr_head_title">发运记录</view>
+  </view>
+  <scroll-view scroll-y="true" scroll-top="{{scrollTop}}" bindscrolltolower="onReachBottom" style="height: 90vh">
+    <view class="addr_body" data-_id="{{a._id}}" wx:for="{{mylist}}" bind:longpress="deletecords"wx:key="id" wx:for-index="i" wx:for-item="a">
+      <view class="addr_body_edit">
+        <navigator url="{{'../user/editaddress/editaddress?mod=edit&_id='+a._id+'&placename='+a.placename+'&peoplenumber='+a.peoplenumber}}" open-type="navigate" hover-class="navigator-hover">{{a.Remarks}}
+        </navigator>
       </view>
-      <view class="con">
-        <view class="nm">{{p.name}}</view>
-        <view class="sub">￥
-          <text>{{p.totalprice}}</text>
-        </view>
-        <view class="des">共{{p.num}}件商品</view>
-      </view>
-      <view class="iconpadding">
-        >>
-        <!--<image src="{{p.imgUrl}} " mode="aspectFit " />-->
+      <view class="addr_body_my_det">
+        <view>倒运信息：{{a.ProductName}}------>{{a.num}}pcs</view>
+        <view class="addr_body_my_det">倒运方向：{{a.placenamefrom}}------>{{a.placenameto}}</view>
+        <view class="addr_body_my_det">更新时间：{{a.time}}</view>
       </view>
     </view>
+  </scroll-view>
 </view>
+<!--遮罩层-->
+<view class="hiddenbox" wx:if="{{addrShow}}" bindtap="closeaddr"></view>

@@ -6,7 +6,7 @@
     <view class="con">
       <view class="nm">{{p.ProductName}}</view>
       <view class="des">{{p.DescribeA}}</view>
-      <view class="sub">￥
+      <view class="sub">TK
         <text>{{p.ProductPrice}}</text>
       </view>
     </view>

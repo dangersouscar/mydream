@@ -21,29 +21,33 @@ Page({
   },
   submit: function () {
     var _this = this;
-    base.get({ c: "User", m: "Login", phone: _this.data.phone, pwd: _this.data.pwd, }, function (d) {
-      var dt = d.data;
-      if (dt.Status == "ok") {
-        base.user.userid = dt.Tag.Uid;
-        base.user.sessionid = dt.Tag.SessionId;
-        base.user.jzb = dt.Tag.Money;
-        base.user.exp = dt.Tag.Exp;
-        base.user.phone = dt.Tag.Phone;
-        base.user.levels = dt.Tag.Levels;
-        base.user.headimg = dt.Tag.HeadImgPath;
+    var addr = {
+      tablename: "userinfo",
+      pagenum: 0,
+    };
+    var codition = {
+      companyname: _this.data.phone,
+      password: _this.data.pwd,
+    }
+    addr.codition = codition;
+
+    base.get(addr, function (d) {
+      console.log(d)
+      if (d.length == 1) {
+        base.user.userid = 1;
         wx.switchTab({
           url: '../user/user'
         })
+        base.userlogin.add(d[0])
       }
       else {
         wx.showModal({
           showCancel: false,
           title: '',
-          content: dt.Msg
+          content: "账号或密码错误！"
         });
 
       }
     })
-
   }
 })

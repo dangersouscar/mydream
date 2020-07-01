@@ -1009,7 +1009,7 @@ icon {
 }
 .weui-search-bar__box {
   position: relative;
-  padding-left: 30px;
+  padding-left: 50px;
   padding-right: 30px;
   width: 100%;
   box-sizing: border-box;

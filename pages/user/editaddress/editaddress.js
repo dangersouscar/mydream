@@ -1,11 +1,12 @@
 var base = getApp();
+var common = require('../../../utils/common.js');
 Page({
     data: {
         loaded: true,
-        id: 0,
+        _id: 0,
         mode: "add",
-        consigee: "",
-        phone: "",
+        placename: "",
+        peoplenumber: "",
         address: "",
         arrayCity: [],
         objectArrayCity: [],
@@ -18,11 +19,17 @@ Page({
     onLoad: function (options) {
         // 页面初始化 options为页面跳转所带来的参数
         var _this = this;
+        console.log(options)
         _this.setData({
             mode: options.mod,
-            id: options.id
+            _id: options._id,
+            placename: options.placename,
+            peoplenumber: options.peoplenumber,
         });
         _this.getCity(_this.preLoad);//先获取城市，城市获取成功再执行加载其他内容过程。
+      wx.setNavigationBarTitle({
+        title: '更新人数'
+      })
 
     },
     preLoad: function () {
@@ -39,8 +46,8 @@ Page({
                     }
                     _this.setData({
                         loaded: true,
-                        consigee: dt.Tag.name,
-                        phone: dt.Tag.phone,
+                        placename: dt.Tag.name,
+                        peoplenumber: dt.Tag.peoplenumber,
                         address: dt.Tag.address,
                         editArea: dt.Tag.area
                     })
@@ -117,12 +124,12 @@ Page({
     },
     changeName: function (e) {
         this.setData({
-            consigee: e.detail.value
+            placename: e.detail.value
         })
     },
-    changePhone: function (e) {
+    changepeoplenumber: function (e) {
         this.setData({
-            phone: e.detail.value
+            peoplenumber: e.detail.value
         })
     },
     changeAddress: function (e) {
@@ -132,48 +139,82 @@ Page({
     },
     submit: function () {
         var _this = this;
-        if (_this.valid()) {
+        console.log(_this.valid())
+        if (_this.valid()) {  
+          if (_this.data.mode == "edit") {
             var addr = {
-                city: _this.data.arrayCity[_this.data.indexCity],
-                area: _this.data.arrayDistrict[_this.data.indexDistrict],
-                address: _this.data.address,
-                name: _this.data.consigee,
-                phone: _this.data.phone,
-                c: "UserCenter"
+              tablename: "addresslist",
+              _id: _this.data._id,
+              
             };
-            if (_this.data.mode == "edit") {
-                addr.id = _this.data.id;
-                addr.m = "UpdateAddress";
+            var data = {
+              placename: _this.data.placename,
+              peoplenumber: _this.data.peoplenumber,
+              time: common.formatTime(new Date()),
             }
-            else {
-                addr.m = "AddAddress";
-            }
-            base.get(addr, function (d) {
-                var dt = d.data;
-                if (dt.Status == "ok") {
-                    wx.redirectTo({
-                        url: "../../user/myaddress/myaddress"
-                    })
-                }
-                else {
-                    wx.showModal({
-                        showCancel: false,
-                        title: '',
-                        content: dt.Msg
-                    });
-
-                    console.log(dt.Msg);
-                }
+            addr.data = data;
+            console.log(addr)
+            wx.cloud.callFunction({
+              // 要调用的云函数名称
+              name: 'update',
+              // 传递给云函数的event参数
+              data: addr
+            }).then(res => {
+              // output: res.result === 3
+              console.log(res)
+              if (res.errMsg == "cloud.callFunction:ok") {
+                wx.reLaunch({
+                  url: '../user/user'
+                })
+              }
+            }).catch(err => {
+                wx.showModal({
+                  showCancel: false,
+                  title: '',
+                  content: res.errMsg
+                });
+                console.log(res.errMsg)
             })
+          }
+          else {
+            var addr = {
+              tablename: "addresslist",
+            };
+            var data = {
+              placename: _this.data.placename,
+              peoplenumber: _this.data.peoplenumber,
+              time: common.formatTime(new Date()),
+            }
+            addr.data = data;
+            console.log(addr)
+            base.post(addr, function (d) {
+              var dt = d.data;
+              if (dt.Status == "ok") {
+                wx.redirectTo({
+                  url: "../../user/myaddress/myaddress"
+                })
+              }
+              else {
+                wx.showModal({
+                  showCancel: false,
+                  title: '',
+                  content: dt.Msg
+                });
 
-
+                console.log(dt.Msg);
+              }
+            })
+            }
         }
+          wx.navigateBack({
+            delta: 1
+          })
 
     },
     valid: function () {
         var _this = this;
         var err = "";
-        if (!_this.data.consigee) {
+        if (!_this.data.placename) {
             err = "请填写收货人姓名！";
             wx.showModal({
                 showCancel: false,
@@ -182,17 +223,8 @@ Page({
             })
             return false;
         }
-        if (!_this.data.phone) {
+        if (!_this.data.peoplenumber) {
             err = "请填写收货人手机号码！";
-            wx.showModal({
-                showCancel: false,
-                title: '',
-                content: err
-            })
-            return false;
-        }
-        if (!_this.phoneRegex(_this.data.phone)) {
-            err = "手机号码格式不正确！";
             wx.showModal({
                 showCancel: false,
                 title: '',
@@ -204,19 +236,10 @@ Page({
         //   v.focArea = false;
         //   return showMsg("请选择区域！", "focArea");
         // }
-        if (!_this.data.address) {
-            err = "请填写详细收货地址！";
-            wx.showModal({
-                showCancel: false,
-                title: '',
-                content: err
-            })
-            return false;
-        }
         return true;
 
     },
-    phoneRegex: function (val) {
+    peoplenumberRegex: function (val) {
         var regex = /^1[3|4|5|7|8][0-9]\d{8}$/;
         if (!regex.test(val)) {
             return false;

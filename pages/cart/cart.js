@@ -4,7 +4,11 @@ Page({
     data: {
         plist: [],//购物车中所有项的信息
         total: 0,
-        his: ""
+        his: "",
+        showModal: false,
+        textV: 0,
+        index:0,
+
     },
     onLoad: function (e) {
 
@@ -29,9 +33,6 @@ Page({
             url: _this.data.his
         })
     },
-    previewImg: function (e) {
-        preview.show(e.currentTarget.dataset.name,e.currentTarget.dataset.brand,e.currentTarget.dataset.index)
-    },
     changeTotal: function () {//计算购物车中所有的金额
         var l = this.data.plist;
         var t = 0;
@@ -47,7 +48,7 @@ Page({
         var t = e.currentTarget.dataset.type;
         var index = e.currentTarget.dataset.index;
         var re = this.data.plist[index].num + parseInt(t);
-        if (re < 100 && re > 0) {
+        if (re < 10000 && re > 0) {
             var key = "plist[" + index + "].num";
             var obj = {}; obj[key] = re;
             
@@ -107,6 +108,10 @@ Page({
             })
         }
     },
+    setnum: function () {
+      var _this = this;
+    
+    },
     goOrder: function () {
      //   this.ing();
         if (this.data.plist.length > 0 && this.data.total > 0) {
@@ -115,13 +120,11 @@ Page({
             })
         } else {
             base.modal({
-                title: '购物车无商品',
+                title: '返修清单无商品',
                 showCancel: false
             })
         }
     },
-    tips: ["尽请期待!", "不用点了、暂时下不了单！", "真de、不骗你！", "不信再试试？！", "没错吧？！", "您可以去其它地方转转了！", "嘿、还挺执着！", "就喜欢你这股子劲！", "但没有任何niao用！", "你已经陷入无限轮回..."],
-    //,"......", ".........", "好吧、你赢了！", "你即将获得一份随机奖励！", "just for your 执着！", "不过先声明、我们真的还未开放下单！"],
     tipsN: 0,
     ing: function () {
         if (this.tipsN >= this.tips.length) {
@@ -252,5 +255,67 @@ Page({
         this.p.tm = setTimeout(function () {
             _this.p.eventStartOk = true;
         }, 300);
+    },
+
+    // 以下为弹窗输入相关代码
+
+    eject: function (e) {
+      console.log(e)
+      var index = parseInt(e.currentTarget.dataset.index);
+      this.setData({
+        index: index
+      })
+      this.setData({
+        showModal: true
+      })
+    },
+    /**
+     * 点击返回按钮隐藏
+     */
+    back: function () {
+      this.setData({
+        showModal: false
+      })
+    },
+    /**
+     * 获取input输入值
+     */
+    wish_put: function (e) {
+      this.setData({
+        textV: e.detail.value
+      })
+    },
+    /**
+     * 点击确定按钮获取input值并且关闭弹窗
+     */
+    ok: function () {
+      console.log(this.data.textV)
+      var re = parseInt(this.data.textV);
+      var index = this.data.index;
+      console.log(index)
+      if (re < 10000 && re > 0) {
+        console.log("判断以内")
+        var key = "plist[" + index + "].num";
+        var obj = {}; obj[key] = re;
+        this.setData(obj);
+        this.changeTotal();
+        console.log(this.data.plist[index].num)
+        base.cart.num(this.data.plist[index].BarCode, re);
+      }
+      this.setData({
+        showModal: false
+      })
     }
+
+
+
+
+
+
+
+
+
+
+
+
 });

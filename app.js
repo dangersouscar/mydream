@@ -1,4 +1,5 @@
 //app.js
+var common = require('./utils/common');
 App({
     version: {
         key: "version",
@@ -177,6 +178,131 @@ App({
         }
         return list;
       },
+      getgoodname: function () {
+        var list = [];
+        var dic = wx.getStorageSync(this.key);
+        for (var p in dic) {
+          console.log(p)
+          list.push(dic[p].ProductName);
+        }
+        return list;
+      },
+      clear: function () {
+        wx.removeStorageSync(this.key);
+      }
+    },
+    userlogin: {//购物车相关操作
+      key: "userlogin",
+      ref: "",
+      add: function (p) {
+        var re = false;
+        console.log(p)
+        if (p.companyname && p.password ) {
+          var dic = wx.getStorageSync(this.key) || {};
+          if (p.companyname in dic) {
+          } else {
+            dic["companyname"] = p.companyname,
+            dic["password"] = p.password
+            wx.setStorageSync(this.key, dic);
+            re = true;
+          }
+
+        }
+        return re;
+      },
+      exist: function (sno) {
+        var re = false;
+        var dic = wx.getStorageSync(this.key) || {};
+        if (sno in dic) {
+          re = true;
+        }
+        return re;
+      },
+      remove: function (sno) {
+        var dic = wx.getStorageSync(this.key) || {};
+        if (sno in dic) {
+          delete dic[sno];
+          wx.setStorageSync(this.key, dic);
+        }
+      },
+      getNum: function () {//获取当前物品的数量
+        var n = 0;
+        var dic = wx.getStorageSync(this.key) || {}
+        console.log(dic)
+        console.log("蔡登鸿要知道")
+        for (var i in dic) {
+          console.log(i)
+          n += dic[i].num;
+        }
+        return n;
+      },
+      num: function (sno, n) {
+        var dic = wx.getStorageSync(this.key) || {};
+        if (sno in dic) {
+          if (n > 0) {
+            dic[sno].num = n;
+          } else {
+            delete dic[sno];
+          }
+          wx.setStorageSync(this.key, dic);
+        }
+      },
+      getList: function () {
+        var list = [];
+        var dic = wx.getStorageSync(this.key);
+        for (var p in dic) {
+          list.push({ BarCode: p, DescribeA: dic[p].DescribeA, DescribeB: dic[p].DescribeB, ProductName: dic[p].ProductName, ProductPrice: dic[p].ProductPrice, imgUrl: dic[p].imgUrl, num: dic[p].num, _id: dic[p]._id });
+        }
+        return list;
+      },
+      getgoodname: function () {
+        var list = [];
+        var dic = wx.getStorageSync(this.key);
+        for (var p in dic) {
+          console.log(p)
+          list.push(dic[p].ProductName);
+        }
+        return list;
+      },
+      clear: function () {
+        wx.removeStorageSync(this.key);
+      }
+    },
+    openid: {//购物车相关操作
+      key: "openid",
+      ref: "",
+      add: function (cb) {
+        var openid = wx.getStorageSync("openid") || {};
+        if (wx.getStorageSync("openid")){
+        }else{
+          wx.cloud.callFunction({
+            // 要调用的云函数名称
+            name: 'openid',
+            // 传递给云函数的event参数
+          }).then(res => {
+            var id = res.result.openid
+            wx.setStorageSync("openid", id)
+          }).catch(err => {
+            console.log(err)
+          })
+        }
+        cb(openid)
+      },
+      exist: function (sno) {
+        var re = false;
+        var dic = wx.getStorageSync(this.key) || {};
+        if (sno in dic) {
+          re = true;
+        }
+        return re;
+      },
+      remove: function (sno) {
+        var dic = wx.getStorageSync(this.key) || {};
+        if (sno in dic) {
+          delete dic[sno];
+          wx.setStorageSync(this.key, dic);
+        }
+      },
       clear: function () {
         wx.removeStorageSync(this.key);
       }
@@ -229,15 +355,30 @@ App({
 
     },
     onShow: function () {
-      var rrr = 1;
-     
     },
     onHide: function () {
-        var rrr = 1;
-        this.goods.clear()
-       
+        var rrr = 1;       
+    },  
+    queryAllgoods: function () {
+      var that = this
+      console.log("查询图书")
+      wx.hideLoading();
+      const db = wx.cloud.database({
+        env: 'cdh1-61abq',
+      })
+      console.log(db)
+      db.collection('myshop')
+        .get({
+          success: res => {
+            console.log(res)
+            for (var i = 0; i < res.data.length; i++) {
+              base.goods.add(
+                res.data[i]
+              )
+            }
+          }
+        })
     },
-   
     getUserInfo: function (cb) {
         var that = this
         if (this.globalData.userInfo) {
@@ -298,7 +439,7 @@ App({
         Page(_obj);
     },
     modal: function (p) {
-        wx.showModal(p);
+        wx.showModal(p)
     },
     toast: function (p) {
         wx.showToast(p);
@@ -319,68 +460,118 @@ App({
         }
     })(),
     get: function (p, suc, tit) {
-        var _this = this;
+      var _this = this;
         //var loaded = false;//请求状态
-        _this.loading.show({ title: tit });
-        // setTimeout(function () {
-        //     if (!loaded) {
-        //         _this.loading.show();
-        //     }
-        // }, 500);
-        if (_this.user.islogin()) {
-            p.userid = _this.user.userid;
-            p.sessionid = _this.user.sessionid;
+      const db = wx.cloud.database({
+        env: 'cdh1-61abq',
+      })
+      console.log(p)
+      db.collection(p.tablename)
+      .where(p.codition)
+      .skip(p.pagenum)
+      .orderBy('time', 'desc')
+      .limit(20)
+      .get({
+        success: res => {
+          var l =[]
+          console.log(res)
+          console.log(p.tablename)
+          for (var i = 0; i < res.data.length; i++) {
+            l.push(res.data[i])
+          }
+          suc(l);
+        },
+        fail: err => {
+          suc(l);
+          console.log(err)
         }
-        wx.request({
-            url: this.path.www + 'client.ashx?v=' + Math.random(),
-            data: p,
-            header: {
-                'Content-Type': 'application/json'
-            },
-            method: "GET",
-            success: function (res) {
-                suc(res);
-            },
-            fail: function (e) {
-                _this.toast({ title: "请求出错！" })
-            },
-            complete: function () {
-                //loaded = true;//完成
-                _this.loading.hide();
-            }
-        })
+      })
     },
     post: function (p, suc) {//购物车信息及送货地址信息
-        var _this = this;
-        var loaded = false;//请求状态
-        setTimeout(function () {
-            if (!loaded) {
-                _this.loading.show();
-            }
-        }, 500);
-        if (_this.user.islogin()) {
-            p.userid = _this.user.userid;
-            p.sessionid = _this.user.sessionid;
-        }
-        wx.request({
-            url: this.path.www + 'client.ashx',
-            data: _this.json2Form(p),
-            header: {
-                // 'Content-Type': 'application/json'
-                "Content-Type": "application/x-www-form-urlencoded"
-            },
-            method: "POST",
-            success: function (res) {
-                suc(res);
-            },
-            fail: function (e) {
-                _this.toast({ title: "请求出错！" })
-            },
-            complete: function () {
-                loaded = true;//完成
-                _this.loading.hide();
-            }
+      var that = this;
+      console.log(p.tablename)
+      //var loaded = false;//请求状态
+      const db = wx.cloud.database({
+        env: 'cdh1-61abq',
+      })
+      db.collection(p.tablename).add({
+        // data 字段表示需新增的 JSON 数据
+        data: p.data,
+        success: function (res) {
+          // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+          console.log(res)
+          wx.showToast({
+            title: "添加成功"
+          })
+          suc(res);
+        },
+        fail: console.error,
+        complete: console.log
+      }) 
+    },
+    del: function (p, suc) {//购物车信息及送货地址信息
+      var that = this;
+      console.log(p.tablename)
+      //var loaded = false;//请求状态
+      if(p._id){
+        const db = wx.cloud.database({
+          env: 'cdh1-61abq',
         })
+        wx.showModal({
+          title: '提示',
+          content: '确定需要删除？',
+          success: function (res) {
+            if (res.confirm) {
+              db.collection(p.tablename).doc(p._id).remove({
+                success: function (res) {
+                  console.log(p._id + "删除成功")
+                  wx.showToast({
+                    title: "删除成功"
+                  })
+                  suc(res)
+                },
+                fail: function (res) {
+                  console.log(db)
+                  console.log(p._id + "删除失败")
+                  wx.showToast({
+                    title: "删除失败"
+                  })
+                }
+
+              })
+
+
+            } else if (res.cancel) {
+              console.log('用户点击取消')
+            }
+
+          }
+        });
+      }
+    },
+    update: function (p, suc) {//购物车信息及送货地址信息
+      var that = this;
+      console.log(p.tablename)
+      //var loaded = false;//请求状态
+      if (p._id) {
+        const db = wx.cloud.database({
+          env: 'cdh1-61abq',
+        })
+        db.collection(p.tablename).doc(p._id).update({
+          // data 字段表示需新增的 JSON 数据
+          data:p.data,
+          success: function (res) {
+            // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+            console.log(res)
+            wx.showToast({
+              title: "添加成功"
+            })
+            suc(res)
+          },
+          fail: console.error,
+          complete: console.log
+        })
+      }
     },
     json2Form: function (json) {
         var str = [];

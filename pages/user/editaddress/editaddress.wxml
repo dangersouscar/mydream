@@ -1,13 +1,13 @@
 <view class="body" wx:if="{{loaded}}">
     <view class="ipt">
-        <input bindinput="changeName" placeholder="收货人姓名" value="{{consigee}}"/>
+        <input bindinput="changeName" placeholder="现场工点名称" value="{{placename}}"/>
     </view>
 
     <view class="ipt">
-        <input bindinput="changePhone" placeholder="收货人手机号码" value="{{phone}}"/>
+        <input bindinput="changepeoplenumber" placeholder="人数" value="{{peoplenumber}}"/>
     </view>
 
-    <view class="section">
+    <!-- <view class="section">
         <picker bindchange="bindPickerChangeCity" value="{{indexCity}}" range="{{arrayCity}}">
             <view class="picker" style="padding-left:10px;color:#666;">
                 城市选择：{{arrayCity[indexCity]}}
@@ -25,7 +25,7 @@
 
     <view class="ipt">
         <input bindinput="changeAddress" placeholder="详细收货地址" value="{{address}}"/>
-    </view>
+    </view> -->
 
     <view class="btn" bindtap="submit">
         确认提交

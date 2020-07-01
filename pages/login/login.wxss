@@ -7,6 +7,7 @@
 }
 .ipt{background: #eee; margin: 10px;width:95%;}
 .ipt input{height:40px;}
+.nm{font-size: 14pt; font-weight: bold; margin: 10px 10px 10px 10px;}
 .btn {
   display: block;
   height: 1.777em;

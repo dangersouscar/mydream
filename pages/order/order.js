@@ -2,21 +2,14 @@ var base = getApp();
 var common = require('../../utils/common.js');
 Page({
     data: {
-        addr: "",
+        addresslist:"",
         scrollTop: 100,
         selectedID: -1,
-        oinfo: {
-            OrderSource: "all|web",
-            Consignee: "",
-            Cellphone: "",
-            City: "",
-            District: "",
-            Address: "",
-            DeliveryDate: "",
-            DeliveryTime: "",
-            Payment: "",
-            Remarks: "",
-            TotalPrice: 0,
+        placenamechoice:"",
+        oinfo: { 
+          placenamefrom: "",
+          placenameto: "",
+          Remarks:"",
         },
     },
     bindDateChange: function (e) {
@@ -24,9 +17,21 @@ Page({
             "oinfo.DeliveryDate": e.detail.value
         })
     },
-    myaddrChange: function () {//触摸选择地址
-        this.setData({addrShow: true});
+    bindTextAreaBlur: function (e) {
+      console.log(e)
+      this.setData({
+        "oinfo.Remarks": e.detail.value
+      })
     },
+    myaddrChange: function (e) {//触摸选择地址
+        console.log(e)
+        this.setData({addrShow: true});
+      if (e.currentTarget.id=="from"){
+        this.setData({ placenamechoice: "from" });
+        }else{
+        this.setData({ placenamechoice: "to" });
+        }
+    },   
     myaddrCancel: function () {//点击地址簿中取消按钮
         this.setData({addrShow: false});
     },
@@ -34,34 +39,41 @@ Page({
         this.setData({addrShow: false});
     },
     toSelect: function (e) {//选中地址
+        console.log(e)
         var _this = this;
-        var id = e.currentTarget.dataset.aid;
-        _this.setData({selectedID: id});
-        for (var i = 0; i < _this.data.addresslist.length; i++) {
-            if (_this.data.addresslist[i].id == id) {
-                _this.setData({
-                    "oinfo.City": _this.data.addresslist[i].city,
-                    "oinfo.District": _this.data.addresslist[i].area,
-                    "oinfo.Consignee": _this.data.addresslist[i].name,
-                    "oinfo.Cellphone": _this.data.addresslist[i].phone,
-                    "oinfo.Address": _this.data.addresslist[i].address,
-                    addr: _this.data.addresslist[i].city + ' ' + _this.data.addresslist[i].area + ' ' + _this.data.addresslist[i].address,
-                    addrShow: false
-                });
-                break;
+        var _id = e.currentTarget.dataset._id;
+        _this.setData({selectedID: _id});
+      if (_this.data.placenamechoice=="from"){
+          for (var i = 0; i < _this.data.addresslist.length; i++) {
+              if (_this.data.addresslist[i]._id == _id) {
+                  _this.setData({
+                    "oinfo.placenamefrom": _this.data.addresslist[i].placename,
+                      addrShow: false
+                  });
+                  break;
+              }
+          }
+        }else{
+          for (var i = 0; i < _this.data.addresslist.length; i++) {
+            if (_this.data.addresslist[i]._id == _id) {
+              _this.setData({
+                "oinfo.placenameto": _this.data.addresslist[i].placename,
+                addrShow: false
+              });
+              break;
             }
+          }
+          
         }
     },
     onLoad: function (e) {
         var _this = this;
         var now = new Date();
-        if (base.user.islogin()) {
+        console.log(base.user.islogin() )
+        if (true) {
             if (e.from && e.from == "cart") {
                 var l = base.cart.getList();
-                for (var i = 0; i < l.length; i++) {
-                    l[i].img = base.path.res + 'images/ksk/item/w_127/' + l[i].name + '.jpg'
-
-                }
+                console.log(l)
                 _this.setData({
                     plist: l,
                     dateStart: common.addDate(now, 1),
@@ -73,26 +85,24 @@ Page({
         console.log(this.data.plist);
     },
     getAddressList: function () {
-        var _this = this;
+      var _this = this;
+      var addr = {
+        tablename: "addresslist",
+        pagenum: _this.data.pagenum * 20,
+      };
+      var codition = {
+      }
+      addr.codition = codition;
 
-        base.get({c: "UserCenter", m: "GetAllAddress"}, function (d) {
-            var dt = d.data;
-            if (dt.Status == "ok") {
-                var arr = [];
-                for (var i = 0; i < dt.Tag.length; i++) {
-                    var obj = dt.Tag[i];
-                    if (i == 0) {
-                        obj.isDefault = true;
-                    }
-                    arr.push(obj);
+      base.get(addr, function (d) {
+        var dt = d.data;
+        if (d) {
+          _this.setData({
+            addresslist: d
+          })
 
-                }
-                _this.setData({
-                    addresslist: arr
-                })
-
-            }
-        })
+        }
+      })
     },
     onShow: function (e) {
 
@@ -138,8 +148,8 @@ Page({
     valid: function () {
         var _this = this;
         var err = "";
-        if (!_this.data.oinfo.Consignee) {
-            err = "请选择收货人信息！";
+         if (!_this.data.oinfo.placenamefrom) {
+            err = "请选择发货单位！";
             wx.showModal({
                 showCancel: false,
                 title: '',
@@ -147,8 +157,8 @@ Page({
             })
             return false;
         }
-        if (!_this.data.oinfo.DeliveryDate) {
-            err = "请选择配送日期！";
+       if (!_this.data.oinfo.placenameto) {
+            err = "请选择收货单位！";
             wx.showModal({
                 showCancel: false,
                 title: '',
@@ -156,60 +166,63 @@ Page({
             })
             return false;
         }
-        if (!_this.data.oinfo.DeliveryTime) {
-            err = "请选择配送时间段！";
-            wx.showModal({
-                showCancel: false,
-                title: '',
-                content: err
-            })
-            return false;
+       if (!_this.data.oinfo.Remarks) {
+          err = "请填写姓名！";
+          wx.showModal({
+            showCancel: false,
+            title: '',
+            content: err
+          })
+          return false;
         }
-        return true;
+       return true;
     },
     submit: function () {
-                                                                    wx.redirectTo({
-                                                                      url: "../payment/payment?oid="
-                                                                    })
-        var _this = this;
-        if (_this.valid()) {
-            _this.getTotalPrice();
-            var obj = {};//创建一个空的字典对象
-            obj.UserName = base.user.phone;
-            obj.UserPhone = base.user.phone;
-            obj.OrderSource = _this.data.oinfo.OrderSource;
-            obj.Consignee = _this.data.oinfo.Consignee;
-            obj.Cellphone = _this.data.oinfo.Cellphone;
-            obj.City = _this.data.oinfo.City;
-            obj.District = _this.data.oinfo.District;
-            obj.Address = _this.data.oinfo.Address;
-            obj.DeliveryDate = _this.data.oinfo.DeliveryDate;
-            obj.DeliveryTime = _this.data.oinfo.DeliveryTime;
-            obj.Payment = _this.data.oinfo.Payment;
-            obj.Uid = base.user.userid;
-            obj.Remarks = _this.data.oinfo.Remarks;
-            obj.TotalPrice = _this.data.oinfo.TotalPrice;
-            obj.TotalPrice = obj.TotalPrice < 0 ? 0 : obj.TotalPrice;
-            var oplArr = _this.getProductList();
-            var oal = [];
-            base.post({
-                c: "OrderCenter",
-                m: "AddOrder",
-                p: JSON.stringify(obj),
-                proInfo: JSON.stringify(oplArr),
-                oalInfo: JSON.stringify(oal)
-            }, function (d) {
-                console.log(d)
-                var dt = d.data;
-                if (dt.Status == "ok") {
-                    base.cart.clear();
-                    wx.redirectTo({
-                        url: "../payment/payment?oid=" + dt.Tag
+      var _this = this;
+      wx.showModal({
+        title: '提示',
+        content: '信息是否准确？',
+        success: function (res) {
+          if (res.confirm) {
+            if (_this.valid()) {
+              var addr = {
+                tablename: "allrecords",
+              };
+              var data = {
+                placenamefrom: _this.data.oinfo.placenamefrom,
+                placenameto: _this.data.oinfo.placenameto,
+                Remarks: _this.data.oinfo.Remarks,
+                time: common.formatTime(new Date()),
+              }
+              for (var i = 0; i < _this.data.plist.length; i++) {
+                data.BarCode = _this.data.plist[i].BarCode
+                data.ProductName = _this.data.plist[i].ProductName
+                data.ProductPrice = _this.data.plist[i].ProductPrice
+                data.num = _this.data.plist[i].num
+                addr.data = data;
+                base.post(addr, function (d) {
+                  var dt = d
+                  console.log(dt)
+                  if (dt.errMsg == "collection.add:ok") {
+                    wx.navigateBack({
+                      delta: 2
                     })
-                }
-
-            })
-
+                    base.cart.clear();
+                  }
+                  else {
+                    wx.showModal({
+                      showCancel: false,
+                      title: '',
+                      content: dt.errMsg
+                    });
+                  }
+                })
+              }
+            }
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
         }
+      });    
     }
 })
