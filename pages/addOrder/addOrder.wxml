@@ -1,0 +1,40 @@
+<view class="page__bd page__bd_spacing">
+    <form catchsubmit="addOrder">
+        <view class="weui-cells__title">请输入相关信息:</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*书名:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="bookName" value="{{bookName}}" placeholder="请输入书名" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">作者:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="author" value="{{author}}" placeholder="请输入作者" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">版本:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="edition" value="{{edition}}" placeholder="请输入版本" />
+                </view>
+            </view>
+
+            <view class="weui-btn-area">
+                <button class="weui-btn" type="primary" formType="submit">确定</button>
+            </view>
+
+
+
+        </view>
+    </form>
+</view>

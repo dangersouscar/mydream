@@ -1,0 +1,14 @@
+<view class="weui-panel weui-panel_access">
+  <view class="weui-panel__bd">
+    <view wx:for="{{orderList}}" wx:key="{{item.bookName}}" id="{{item.name}}" class="weui-media-box weui-media-box_appmsg">
+      <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+        <view class="weui-media-box__title">书名：{{item.bookName}}</view>
+        <view class="weui-media-box__title">作者：{{item.author}}</view>
+        <view class="weui-media-box__title">版本：{{item.edition}}</view>
+        <view class="weui-media-box__title" wx:if="{{ item.status == 0 }}">状态：预定</view>
+        <view class="weui-media-box__title" wx:if="{{ item.status == 1 }}">状态：已取消</view>
+        <button type="primary" wx:if="{{ item.status == 0 }}" size="mini" bindtap="cancelOrder" data-item="{{item}}">取消预定</button>
+      </view>
+    </view>
+  </view>
+</view>

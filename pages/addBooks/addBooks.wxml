@@ -1,0 +1,141 @@
+<view class="page__bd page__bd_spacing">
+    <view class="weui-cells__title">录入方式</view>
+    <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_switch">
+            <view class="weui-cell__bd">扫码录入图书条码:</view>
+            <view class="weui-cell__ft">
+                <button type="primary" bindtap="screenInput" size="mini">扫码</button>
+            </view>
+        </view>
+    </view>
+    <form bindsubmit="addBook">
+        <view class="weui-cells__title">图书基本信息:</view>
+        <view class="weui-cells weui-cells_after-title">
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*图书条码:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input type="number" class="weui-input" value="{{isbn}}" name="isbn" bindinput="bindIsbn" placeholder="请输入ISBN" />
+                </view>
+                <view class="weui-cell__ft">
+                    <icon type="search" size="20" bindtap="searchIsbn"></icon>
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*书名:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="name" value="{{name}}" placeholder="请输入书名" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*作者:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="author" value="{{author}}" placeholder="请输入作者" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*版本:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="edition" value="{{edition}}" placeholder="请输入版本" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*出版商:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="publishCompany" value="{{publishCompany}}" placeholder="请输入出版商" />
+                </view>
+            </view>
+
+            <!-- <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*出版时间:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="publishTime" value="{{book.publishTime}}" placeholder="请输入出版时间" />
+                </view>
+            </view> -->
+
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*原价:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input type="number" class="weui-input" name="originalPrice" value="{{originalPrice}}" placeholder="请输入原价" />
+                </view>
+            </view>
+
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">*售价:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input type="number" class="weui-input" name="salePrice" value="{{salePrice}}" placeholder="请输入售价" />
+                </view>
+            </view>
+
+
+            <view class="weui-cell">
+                <view class="weui-cell__bd">
+                    <view class="weui-uploader">
+                        <view class="weui-uploader__hd">
+                            <view class="weui-uploader__title">*图片上传</view>
+                            <view class="weui-uploader__info">重复上传会覆盖以前图片</view>
+                        </view>
+                        <view class="weui-uploader__bd">
+                            <view class="weui-uploader__files" id="uploaderFiles">
+                                <block wx:if="{{ imgUrl != '' }}">
+                                    <view class="weui-uploader__file" bindtap="previewImage">
+                                        <image class="weui-uploader__img" src="{{imgUrl}}" mode="aspectFill" />
+                                    </view>
+                                </block>
+                            </view>
+                            <view class="weui-uploader__input-box">
+                                <view class="weui-uploader__input" bindtap="chooseImage"></view>
+                            </view>
+                        </view>
+                    </view>
+                </view>
+            </view>
+
+            <!-- <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">手机号码:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="phonenumber" placeholder="请输入您的手机号" />
+                </view>
+            </view> -->
+
+            <!-- <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__hd">
+                    <view class="weui-label">位置:</view>
+                </view>
+                <view class="weui-cell__bd">
+                    <input class="weui-input" name="position" placeholder="请输入你的位置" type="number"/>
+                </view>
+            </view> -->
+
+            <view class="weui-btn-area">
+                <button class="weui-btn" type="primary" formType="submit">发布</button>
+            </view>
+
+
+
+        </view>
+    </form>
+</view>

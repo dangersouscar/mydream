@@ -1,0 +1,109 @@
+<view class="page">
+    <view class="page__bd page__bd_spacing">
+
+        <image mdoe="aspectFit" src="{{bookMsg.imgUrl}}" class="img"></image>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">图书条码:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{bookMsg.isbn}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">书名:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" value="{{bookMsg.name}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">作者:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" value="{{bookMsg.author}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">版本:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" value="{{bookMsg.edition}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">出版商:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input class="weui-input" value="{{bookMsg.publishCompany}}" disabled="true" />
+            </view>
+        </view>
+
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">原价:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{bookMsg.originalPrice}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">售价:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{bookMsg.salePrice}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input">
+            <view class="weui-cell__hd">
+                <view class="weui-label">学校:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{bookMsg.school}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input" wx:if="{{source == 0}}">
+            <view class="weui-cell__hd">
+                <view class="weui-label">出售人:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{saler}}" disabled="true" />
+            </view>
+            <view class="weui-cell_ft">
+                <view class="weui-vcode-btn" bindtap="sendMsg" data-userid="{{bookMsg.userId}}">私信</view>
+            </view>
+        </view>
+
+        <view class="weui-cell weui-cell_input" wx:if="{{source == 1}}">
+            <view class="weui-cell__hd">
+                <view class="weui-label">状态:</view>
+            </view>
+            <view class="weui-cell__bd">
+                <input type="number" class="weui-input" value="{{saleStatus}}" disabled="true" />
+            </view>
+        </view>
+
+        <view class="weui-flex" wx:if="{{source == 1}}">
+            <view class="weui-flex__item">
+                <button class="weui-btn" type="primary" size="mini" bindtap="cancelSaleBook">取消出售</button>
+            </view>
+            <view class="weui-flex__item">
+                <button class="weui-btn" type="primary" size="mini" bindtap="confirmSaled">确认已售</button>
+            </view>
+        </view>
+    </view>
+</view>

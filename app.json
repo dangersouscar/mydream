@@ -1,0 +1,41 @@
+{
+  "pages":[
+    "pages/index/index",
+    "pages/detail/detail",
+    "pages/addOrder/addOrder",
+    "pages/me/me",
+    "pages/addBooks/addBooks",
+    "pages/bookList/bookList",
+    "pages/profile/profile",
+    "pages/myPublish/myPublish",
+    "pages/myOrder/myOrder",
+    "pages/message/message",
+    "pages/chat/chat"
+  ],
+  "tabBar": {
+    "list": [{
+      "iconPath": "assets/img/search-1.png",
+      "selectedIconPath": "assets/img/search.png",
+      "pagePath": "pages/index/index",
+      "text": "查询图书"
+    }, {
+      "iconPath": "assets/img/dy-1.png",
+      "selectedIconPath": "assets/img/dy.png",
+      "pagePath": "pages/addOrder/addOrder",
+      "text": "预定图书"
+    },
+    {
+      "iconPath": "assets/img/tj-1.png",
+      "selectedIconPath": "assets/img/tj.png",
+      "pagePath": "pages/me/me",
+      "text": "个人中心"
+    }]
+  },
+  "window":{
+    "backgroundTextStyle":"black",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "图书管理系统",
+    "navigationBarTextStyle":"black",
+    "enablePullDownRefresh":false
+  }
+}
