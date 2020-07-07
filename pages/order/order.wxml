@@ -27,7 +27,7 @@
 </view>
 <view class="date tab" style="height:100px;margin-bottom:60px;">
   <view class="tit">备注</view>
-  <textarea bindblur="bindTextAreaBlur" wx:if="{{!addrShow}}" class="textareastyle" placeholder="请填写发货人姓名..." value="{{oinfo.Remarks}}" />
+  <textarea bindblur="bindTextAreaBlur" wx:if="{{!addrShow}}" class="textareastyle" placeholder="请填写备注信息（相关人姓名）..." value="{{oinfo.Remarks}}" />
 </view>
 <view class="tool">
   <view class="sub" bindtap="submit">发布</view>

@@ -27,7 +27,7 @@
   <view class="total">总金额：
     <text>TK{{total}}</text>
   </view>
-  <view class="gobuy" bindtap="goOrder">确认返修</view>
+  <view class="gobuy" bindtap="goOrder">确认</view>
 </view>
 <view class="tool-layer"></view>
 

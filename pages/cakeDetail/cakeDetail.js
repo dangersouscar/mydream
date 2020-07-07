@@ -61,10 +61,10 @@ Page({
             that.setData({ cartNum: base.cart.getNum() })
            wx.showModal({
                 title: '加入成功！',
-                content: "跳转到购物车或留在当前页",
+                content: "跳转到清单或留在当前页",
                 showCancel: true,
                 cancelText: "留在此页",
-                confirmText: "维修清单",
+                confirmText: "进入清单",
                 success: function (res) {
                     if (res.confirm) {
                       that.goc();
